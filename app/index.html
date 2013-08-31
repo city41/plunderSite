@@ -6,23 +6,18 @@
 <head>
 	<meta charset='utf-8' />
 	<title>Plunder</title>
-	<!-- build:css({.tmp,app}) styles/bootstrap.css -->
+	<!-- build:css({styles,app}) styles/bootstrap.css -->
 	<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
 	<!-- endbuild -->
-	<!-- build:css({.tmp,app}) styles/tomorrow-night.css -->
+	<!-- build:css({styles,app}) styles/tomorrow-night.css -->
 	<link rel="stylesheet" href="bower_components/highlightjs/styles/tomorrow-night.css">
 	<!-- endbuild -->
-	<style>
-		#canvas {
-			border: 1px solid gray;
-			width: 100%;
-			height: 100%;
-		}
-	</style>
+	<!-- build:css({styles,app}) styles/main.css -->
+	<link rel="stylesheet" href="styles/main.css">
+	<!-- endbuild -->
 </head>
 <body>
 	<nav class="navbar navbar-default" role="navigation">
-	  <!-- Brand and toggle get grouped for better mobile display -->
 	  <div class="navbar-header">
 		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
 		  <span class="sr-only">Toggle navigation</span>
@@ -33,7 +28,6 @@
 		<a class="navbar-brand" href="#">Plunder</a>
 	  </div>
 
-	  <!-- Collect the nav links, forms, and other content for toggling -->
 		<div class="collapse navbar-collapse">
 			<ul class="nav navbar-nav navbar-right">
 				<li><a href="docs/index.html">Docs</a></li>
@@ -48,12 +42,13 @@
 		</div>
 		<div class="col-md-2"></div>
 	</div>
+
 	<div class="row">
 		<div class="col-md-2"></div>
 		<div class="col-md-5">
 <pre><code>var t = new Timeline(mySquare);
 t.forever(function() {
-  var toRight = t.together({ duration: 2000 }, function() {
+  var g = t.together({ duration: 2000 }, function() {
 
     t.rotate({ from: 0, to: 360 });
     t.scale({ from: 1, to: 10 });
@@ -70,14 +65,14 @@ t.forever(function() {
 
   });
   t.wait(1000);
-  t.reverse(toRight);
+  t.reverse(g);
 });</pre></code>
 		</div>
 		<div class="col-md-3">
 			<div>
 				<canvas id="canvas"></canvas>
 			</div>
-			<a href="#" class="btn" id="play-main-example">Pause</a>
+			<button class="btn btn-default" id="play-main-example">Pause</button>
 		</div>
 		<div class="col-md-2"></div>
 	</div>
@@ -102,9 +97,9 @@ t.forever(function() {
 		</div>
 		<div class="col-md-2"></div>
 	</div>
-	<div class="row" style="margin: 25px 0;">
+	<div class="row">
 		<div class="col-md-2"></div>
-		<div class="col-md-8 muted">Created by <a href="http://www.mattgreer.org">Matt Greer</a> and MIT licensed, last updated July 18, 2013</div>
+		<div class="col-md-8">Created by <a href="http://www.mattgreer.org">Matt Greer</a> and MIT licensed, last updated July 18, 2013</div>
 		<div class="col-md-2"></div>
 	</div>
 
