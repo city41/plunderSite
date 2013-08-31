@@ -1,0 +1,119 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<title>Plunder</title>
+	<link rel="stylesheet" href="styles/300c7b20.bootstrap.css">
+	<link rel="stylesheet" href="styles/6443a19d.tomorrow-night.css">
+	<style>
+		#canvas {
+			border: 1px solid gray;
+			width: 100%;
+			height: 100%;
+		}
+	</style>
+</head>
+<body>
+	<div class="navbar">
+		<div class="navbar-inner">
+			<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+				<span class="icon-th-list"></span>
+			</a>
+			<a class="brand" href="#">Plunder</a>
+			<div class="nav-collapse collapse">
+				<ul class="nav pull-right">
+					<li><a href="docs/index.html">Docs</a></li>
+					<li><a href="https://github.com/city41/plunder">Github</a></li>
+				</ul>
+			</div>
+  		</div>
+	</div>
+
+	<div class="row-fluid">
+		<div class="span2"></div>
+		<div class="span8" style="margin-bottom: 25px">
+			<h1>Plunder <span><small>awesome animation for JavaScript games</small></span></h1>
+		</div>
+		<div class="span2"></div>
+	</div>
+	<div class="row-fluid">
+		<div class="span2"></div>
+		<div class="span5">
+<pre><code>var t = new Timeline(mySquare);
+t.forever(function() {
+  var toRight = t.together({ duration: 2000 }, function() {
+
+    t.rotate({ from: 0, to: 360 });
+    t.scale({ from: 1, to: 10 });
+
+    t.color({
+      from: [255, 0, 0, 1],
+      to: [255, 255, 0, 0.2]
+    });
+
+    t.move({
+      from: { x: 10, y: 10 },
+      to: { x: 250, y: 100 }
+    });
+
+  });
+  t.wait(1000);
+  t.reverse(toRight);
+});</code></pre>
+		</div>
+		<div class="span3">
+			<div>
+				<canvas id="canvas"></canvas>
+			</div>
+			<a href="#" class="btn" id="play-main-example">Pause</a>
+		</div>
+		<div class="span2"></div>
+	</div>
+
+	<div class="row-fluid" style="margin-top: 25px">
+		<div class="span2"></div>
+		<div class="span8">
+			<p><b>Plunder</b> is an animation system targeted at JavaScript game engines. It provides powerful tween based animations, is engine agnostic,
+			and easily integrates into your game.</p>
+			<p><b>Plunder</b> is well tested and performant. It is in its infancy right now, but was extracted from a previous game engine.</p>
+		</div>
+		<div class="span2"></div>
+	</div>
+	<div class="row-fluid">
+		<div class="span2"></div>
+		<div class="span8">
+			<h2>Not ready yet!</h2>
+			<p>
+			Plunder is about 4 days old now. It's not ready to be used yet, but will be shortly. You can get
+			Plunder updates from me on <a href="http://twitter.com/cityfortyone">Twitter</a>.
+			</p>
+		</div>
+		<div class="span2"></div>
+	</div>
+	<div class="row-fluid" style="margin: 25px 0">
+		<div class="span2"></div>
+		<div class="span8 muted">Created by <a href="http://www.mattgreer.org">Matt Greer</a> and MIT licensed, last updated July 18, 2013</div>
+		<div class="span2"></div>
+	</div>
+
+
+	<script src="scripts/vendor/6ec9174b.bootstrap.js"></script>
+	<script src="scripts/vendor/bcf3edc8.plunder.js"></script>
+	<script src="scripts/vendor/c7dcbd88.highlight.js"></script>
+	<script src="scripts/6cf87f06.main-example.js"></script>
+	<script>
+		hljs.initHighlightingOnLoad();
+	</script>
+
+	<!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+	<script>
+		var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
+		(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+		g.src='//www.google-analytics.com/ga.js';
+		s.parentNode.insertBefore(g,s)}(document,'script'));
+	</script>
+</body>
+</html>
