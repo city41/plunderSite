@@ -7,3 +7,13 @@
 .row {
   width: 100%;
 }
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/matt\/dev\/plunderSite\/app\/sass\/main\.scss}line{font-family:\000039}}
+.footer {
+  width: 100%;
+  margin-top: 30px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  font-size: 0.7em;
+  background-color: #e6e6e6;
+}
