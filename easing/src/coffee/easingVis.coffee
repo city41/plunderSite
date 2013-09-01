@@ -18,7 +18,9 @@ define ['plunder', 'raf'], (Plunder) ->
       @_updateBound(0)
 
     _update: (ts) ->
-      @_lastTimestamp ?= ts
+      if !@_lastTimestamp
+        @_lastTimestamp = ts
+
       delta = ts - @_lastTimestamp
       @_lastTimestamp = ts
 
@@ -28,7 +30,6 @@ define ['plunder', 'raf'], (Plunder) ->
       window.requestAnimationFrame(@_updateBound)
 
     _drawNode: (delta, x, easingFn, color, xExpandOffset=null) ->
-
       @_elapsed += delta
       if @_elapsed >= @duration
         @_elapsed -= @duration

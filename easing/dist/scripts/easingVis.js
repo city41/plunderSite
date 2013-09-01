@@ -23,7 +23,7 @@
 
       EasingVis.prototype._update = function(ts) {
         var delta;
-        if (this._lastTimestamp == null) {
+        if (!this._lastTimestamp) {
           this._lastTimestamp = ts;
         }
         delta = ts - this._lastTimestamp;

@@ -43,8 +43,11 @@ module.exports = (grunt) ->
         tasks: ["coffee:easing"]
 
       docs:
-        files: ["<%= yeoman.docs %>/src/**/*.{coffee,html}"]
-        tasks: ["coffee:docs", "copy:docs"]
+        files: [
+          "<%= yeoman.docs %>/src/**/*.{coffee,html}"
+          "<%= yeoman.easing %>/src/**/*.{coffee,html}"
+        ]
+        tasks: ["coffee:docs", "copy:docs", "coffee:easing", "copy:easing"]
 
       livereload:
         options:
