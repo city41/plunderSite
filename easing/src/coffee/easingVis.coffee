@@ -1,6 +1,6 @@
 define ['plunder', 'raf'], (Plunder) ->
   class EasingVis
-    constructor: (canvasId, easingFn, @duration=8000) ->
+    constructor: (canvasId, easingFn, @duration=12000) ->
       @canvas = document.getElementById canvasId
       @context = @canvas.getContext('2d')
       @w = @canvas.width
@@ -11,7 +11,8 @@ define ['plunder', 'raf'], (Plunder) ->
       @_elapsed = 0;
       @_lastTimestamp = null
 
-      @_pathBuffer = @_createPathBuffer(@w, @h, @duration)
+      @offset = 40
+      @_pathBuffer = @_createPathBuffer(@w, @h, @duration, @offset)
       
     go: ->
       @_updateBound(0)
@@ -22,21 +23,27 @@ define ['plunder', 'raf'], (Plunder) ->
       @_lastTimestamp = ts
 
       @context.drawImage(@_pathBuffer, 0, 0)
-      @_drawNode(delta, 10, @easingFn, 'rgb(200, 120, 40)')
-      @_drawNode(delta, 30, Plunder.Easie.linear, 'rgb(255, 0, 0)')
+      @_drawNode(delta, @offset/4, Plunder.Easie.linear, 'rgb(255, 0, 0)')
+      @_drawNode(delta, 3 * @offset/4, @easingFn, 'rgb(200, 120, 40)', @offset)
       window.requestAnimationFrame(@_updateBound)
 
-    _drawNode: (delta, x, easingFn, color) ->
+    _drawNode: (delta, x, easingFn, color, xExpandOffset=null) ->
+
       @_elapsed += delta
       if @_elapsed >= @duration
         @_elapsed -= @duration
 
       y = easingFn(@_elapsed, 0, @h, @duration)
 
-      @context.fillStyle = color
-      @context.fillRect(x-3, y-3, 6, 6)
+      if xExpandOffset
+        @context.fillStyle = 'rgba(180, 180, 180, 0.5)'
+        ex = @linear(@_elapsed, xExpandOffset, @w-xExpandOffset, @duration)
+        @context.fillRect(x, y-1.5, ex-x-1.5, 2)
 
-    _createPathBuffer: (w, h, d) ->
+      @context.fillStyle = color
+      @context.fillRect(x-4, y-4, 8, 8)
+
+    _createPathBuffer: (w, h, d, offset) ->
       canvas = document.createElement 'canvas'
       canvas.width = w
       canvas.height = h
@@ -48,9 +55,12 @@ define ['plunder', 'raf'], (Plunder) ->
       context.fillStyle = 'rgb(200, 200, 200)'
 
       for i in [0..d] by 4
-        x = @linear(i, 0, w, d)
+        x = @linear(i, offset, w-offset, d)
         y = @easingFn(i, 0, h, d)
         context.fillRect(x-1.5, y-1.5, 3, 3)
+
+      context.fillStyle = 'rgb(80,80,80)'
+      context.fillRect(0, 0, offset, h)
 
       return canvas
 
