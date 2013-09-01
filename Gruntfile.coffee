@@ -21,6 +21,7 @@ module.exports = (grunt) ->
     app: "app"
     dist: "dist"
     easing: "easing"
+    docs: "docs"
 
   grunt.initConfig
     yeoman: yeomanConfig
@@ -40,6 +41,10 @@ module.exports = (grunt) ->
       easing:
         files: ["<%= yeoman.easing %>/src/**/*.coffee"]
         tasks: ["coffee:easing"]
+
+      docs:
+        files: ["<%= yeoman.docs %>/src/**/*.coffee"]
+        tasks: ["coffee:docs"]
 
       livereload:
         options:
@@ -77,6 +82,16 @@ module.exports = (grunt) ->
           port: 9001
           middleware: (connect) ->
             [
+              mountFolder(connect, "#{yeomanConfig.easing}/dist")
+              mountFolder(connect, "#{yeomanConfig.app}/bower_components")
+            ]
+
+      docs:
+        options:
+          port: 9002
+          middleware: (connect) ->
+            [
+              mountFolder(connect, "#{yeomanConfig.docs}/dist")
               mountFolder(connect, "#{yeomanConfig.easing}/dist")
               mountFolder(connect, "#{yeomanConfig.app}/bower_components")
             ]
@@ -121,6 +136,14 @@ module.exports = (grunt) ->
           cwd: "<%= yeoman.easing %>/src/coffee"
           src: "{,*/}*.coffee"
           dest: "<%= yeoman.easing %>/dist/scripts"
+          ext: ".js"
+        ]
+      docs:
+        files: [
+          expand: true
+          cwd: "<%= yeoman.docs %>/src/coffee"
+          src: "{,*/}*.coffee"
+          dest: "<%= yeoman.docs %>/dist/scripts"
           ext: ".js"
         ]
       dist:
@@ -266,6 +289,17 @@ module.exports = (grunt) ->
     
     # Put files not handled in other tasks here
     copy:
+      docs:
+        files: [
+          expand: true
+          cwd: "<%= yeoman.docs %>/src"
+          dest: "<%= yeoman.docs %>/dist"
+          src: [
+            "index.html"
+            "require.js"
+            "styles/**/*.css"
+          ]
+        ]
       easing:
         files: [
           expand: true
@@ -322,5 +356,7 @@ module.exports = (grunt) ->
   grunt.registerTask "test", ["clean:server", "concurrent:test", "connect:test", "mocha"]
   grunt.registerTask "build", ["clean:dist", "useminPrepare", "concurrent:dist", "concat", "cssmin", "uglify", "copy:dist", "rev", "usemin"]
   grunt.registerTask "build:easing", ["coffee:easing", "copy:easing"]
+  grunt.registerTask "build:docs", ["coffee:docs", "copy:docs"]
   grunt.registerTask "server:easing", ["build:easing", "connect:easing", "watch:easing"]
+  grunt.registerTask "server:docs", ["build:docs", "connect:docs", "watch:docs"]
   grunt.registerTask "default", ["jshint", "test", "build"]
