@@ -43,8 +43,8 @@ module.exports = (grunt) ->
         tasks: ["coffee:easing"]
 
       docs:
-        files: ["<%= yeoman.docs %>/src/**/*.coffee"]
-        tasks: ["coffee:docs"]
+        files: ["<%= yeoman.docs %>/src/**/*.{coffee,html}"]
+        tasks: ["coffee:docs", "copy:docs"]
 
       livereload:
         options:
@@ -92,7 +92,7 @@ module.exports = (grunt) ->
           middleware: (connect) ->
             [
               mountFolder(connect, "#{yeomanConfig.docs}/dist")
-              mountFolder(connect, "#{yeomanConfig.easing}/dist")
+              mountFolder(connect, "")
               mountFolder(connect, "#{yeomanConfig.app}/bower_components")
             ]
 
@@ -295,7 +295,7 @@ module.exports = (grunt) ->
           cwd: "<%= yeoman.docs %>/src"
           dest: "<%= yeoman.docs %>/dist"
           src: [
-            "index.html"
+            "**/*.html"
             "require.js"
             "styles/**/*.css"
           ]
