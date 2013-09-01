@@ -20,6 +20,7 @@ module.exports = (grunt) ->
   yeomanConfig =
     app: "app"
     dist: "dist"
+    easing: "easing"
 
   grunt.initConfig
     yeoman: yeomanConfig
@@ -35,6 +36,10 @@ module.exports = (grunt) ->
       compass:
         files: ["<%= yeoman.app %>/sass/{,*/}*.{scss,sass}"]
         tasks: ["compass:server"]
+
+      easing:
+        files: ["<%= yeoman.easing %>/src/**/*.coffee"]
+        tasks: ["coffee:easing"]
 
       livereload:
         options:
@@ -66,6 +71,15 @@ module.exports = (grunt) ->
         options:
           middleware: (connect) ->
             [mountFolder(connect, yeomanConfig.dist)]
+
+      easing:
+        options:
+          port: 9001
+          middleware: (connect) ->
+            [
+              mountFolder(connect, "#{yeomanConfig.easing}/dist")
+              mountFolder(connect, "#{yeomanConfig.app}/bower_components")
+            ]
 
     open:
       server:
@@ -101,6 +115,14 @@ module.exports = (grunt) ->
           urls: ["http://localhost:<%= connect.options.port %>/index.html"]
 
     coffee:
+      easing:
+        files: [
+          expand: true
+          cwd: "<%= yeoman.easing %>/src/coffee"
+          src: "{,*/}*.coffee"
+          dest: "<%= yeoman.easing %>/dist/scripts"
+          ext: ".js"
+        ]
       dist:
         files: [
           expand: true
@@ -244,6 +266,16 @@ module.exports = (grunt) ->
     
     # Put files not handled in other tasks here
     copy:
+      easing:
+        files: [
+          expand: true
+          cwd: "<%= yeoman.easing %>/src"
+          dest: "<%= yeoman.easing %>/dist"
+          src: [
+            "index.html"
+            "require.js"
+          ]
+        ]
       dist:
         files: [
           expand: true
@@ -289,4 +321,6 @@ module.exports = (grunt) ->
 
   grunt.registerTask "test", ["clean:server", "concurrent:test", "connect:test", "mocha"]
   grunt.registerTask "build", ["clean:dist", "useminPrepare", "concurrent:dist", "concat", "cssmin", "uglify", "copy:dist", "rev", "usemin"]
+  grunt.registerTask "build:easing", ["coffee:easing", "copy:easing"]
+  grunt.registerTask "server:easing", ["build:easing", "connect:easing", "watch:easing"]
   grunt.registerTask "default", ["jshint", "test", "build"]
