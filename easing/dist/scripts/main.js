@@ -8,9 +8,9 @@
   require(['plunder', 'easingVis', 'domReady'], function(Plunder, EasingVis, domReady) {
     'use strict';
     return domReady(function() {
-      var e;
-      e = new EasingVis('#canvas', 'cubicInOut');
-      return e.go();
+      new EasingVis('canvas', 'cubicInOut').go();
+      new EasingVis('canvas2', 'bounceIn').go();
+      return new EasingVis('canvas3', 'quadOut').go();
     });
   });
 

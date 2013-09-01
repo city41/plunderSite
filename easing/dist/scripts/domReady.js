@@ -1,6 +1,8 @@
 (function() {
   define(function() {
     var callReady, doc, domReady, isBrowser, isPageLoaded, isTop, pageLoaded, readyCalls, runCallbacks, scrollIntervalId, testDiv;
+    isPageLoaded = false;
+    readyCalls = [];
     runCallbacks = function(callbacks) {
       var i, _results;
       i = void 0;
@@ -13,7 +15,7 @@
       return _results;
     };
     callReady = function() {
-      var callbacks, readyCalls;
+      var callbacks;
       callbacks = readyCalls;
       if (isPageLoaded) {
         if (callbacks.length) {
@@ -27,7 +29,6 @@
     */
 
     pageLoaded = function() {
-      var isPageLoaded;
       if (!isPageLoaded) {
         isPageLoaded = true;
         if (scrollIntervalId) {

@@ -1,4 +1,7 @@
 define ->
+  isPageLoaded = false
+  readyCalls = []
+
   runCallbacks = (callbacks) ->
     i = undefined
     i = 0
