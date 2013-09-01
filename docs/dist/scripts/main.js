@@ -8,7 +8,7 @@
     }
   });
 
-  require(['easingDoc'], function(easingDoc) {
+  require(['./easingDoc'], function(easingDoc) {
     'use strict';
     return easingDoc('easing_toc_section', 'easing_demo_container');
   });

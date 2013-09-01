@@ -5,7 +5,7 @@ require.config
     domReady: '../easing/dist/scripts/domReady'
     raf: '../easing/dist/scripts/raf'
 
-require ['easingDoc'], (easingDoc) ->
+require ['./easingDoc'], (easingDoc) ->
   'use strict'
   easingDoc('easing_toc_section', 'easing_demo_container')
 

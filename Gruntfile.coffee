@@ -192,6 +192,13 @@ module.exports = (grunt) ->
     #            dist: {}
     #        },
     requirejs:
+      docs:
+        options:
+          baseUrl: "<%= yeoman.docs %>"
+          mainConfigFile: "<%= yeoman.docs %>/dist/scripts/main.js"
+          name: "dist/scripts/main"
+          out: "<%= yeoman.docs %>/dist/scripts/docs.js"
+          optimize: "none"
       dist:
         
         # Options: https://github.com/jrburke/r.js/blob/master/build/example.build.js
@@ -292,6 +299,18 @@ module.exports = (grunt) ->
     
     # Put files not handled in other tasks here
     copy:
+      docstodist:
+        files: [
+          expand: true
+          cwd: "<%= yeoman.docs %>/dist"
+          dest: "<%= yeoman.dist %>/docs"
+          src: [
+            "**/*.html"
+            "require.js"
+            "styles/**/*.css"
+            "scripts/docs.js"
+          ]
+        ]
       docs:
         files: [
           expand: true
@@ -357,9 +376,11 @@ module.exports = (grunt) ->
     grunt.task.run ["clean:server", "concurrent:server", "connect:livereload", "open", "watch"]
 
   grunt.registerTask "test", ["clean:server", "concurrent:test", "connect:test", "mocha"]
-  grunt.registerTask "build", ["clean:dist", "useminPrepare", "concurrent:dist", "concat", "cssmin", "uglify", "copy:dist", "rev", "usemin"]
+
+  grunt.registerTask "deploy:docs", ["build:docs", "copy:docstodist"]
+  grunt.registerTask "build", ["clean:dist", "useminPrepare", "concurrent:dist", "concat", "cssmin", "uglify", "copy:dist", "rev", "usemin", "deploy:docs"]
   grunt.registerTask "build:easing", ["coffee:easing", "copy:easing"]
-  grunt.registerTask "build:docs", ["coffee:docs", "copy:docs"]
+  grunt.registerTask "build:docs", ["coffee:docs", "requirejs:docs", "copy:docs"]
   grunt.registerTask "server:easing", ["build:easing", "connect:easing", "watch:easing"]
   grunt.registerTask "server:docs", ["build:docs", "connect:docs", "watch:docs"]
   grunt.registerTask "default", ["jshint", "test", "build"]
