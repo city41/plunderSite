@@ -7,7 +7,7 @@ require ['plunder', 'easingVis', 'domReady'], (Plunder, EasingVis, domReady) ->
 
   domReady ->
     new EasingVis('canvas', 'cubicInOut').go()
-    new EasingVis('canvas2', 'bounceIn').go()
+    new EasingVis('canvas2', 'bounceInOut').go()
     new EasingVis('canvas3', 'quadOut').go()
 
 

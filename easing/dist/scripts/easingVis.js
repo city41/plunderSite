@@ -53,10 +53,10 @@
         context.fillStyle = 'black';
         context.fillRect(0, 0, w, h);
         context.fillStyle = 'rgb(200, 200, 200)';
-        for (i = _i = 0; 0.1 > 0 ? _i <= d : _i >= d; i = _i += 0.1) {
+        for (i = _i = 0; _i <= d; i = _i += 4) {
           x = this.linear(i, 0, w, d);
           y = this.easingFn(i, 0, h, d);
-          context.fillRect(x - 0.5, y - 0.5, 1, 1);
+          context.fillRect(x - 1.5, y - 1.5, 3, 3);
         }
         return canvas;
       };

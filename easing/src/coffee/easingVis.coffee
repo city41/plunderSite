@@ -47,10 +47,10 @@ define ['plunder', 'raf'], (Plunder) ->
 
       context.fillStyle = 'rgb(200, 200, 200)'
 
-      for i in [0..d] by 0.1
+      for i in [0..d] by 4
         x = @linear(i, 0, w, d)
         y = @easingFn(i, 0, h, d)
-        context.fillRect(x-0.5, y-0.5, 1, 1)
+        context.fillRect(x-1.5, y-1.5, 3, 3)
 
       return canvas
 

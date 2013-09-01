@@ -9,7 +9,7 @@
     'use strict';
     return domReady(function() {
       new EasingVis('canvas', 'cubicInOut').go();
-      new EasingVis('canvas2', 'bounceIn').go();
+      new EasingVis('canvas2', 'bounceInOut').go();
       return new EasingVis('canvas3', 'quadOut').go();
     });
   });
