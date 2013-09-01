@@ -29,8 +29,8 @@
         delta = ts - this._lastTimestamp;
         this._lastTimestamp = ts;
         this.context.drawImage(this._pathBuffer, 0, 0);
-        this._drawNode(delta, this.offset / 4, Plunder.Easie.linear, 'rgb(255, 0, 0)');
-        this._drawNode(delta, 3 * this.offset / 4, this.easingFn, 'rgb(200, 120, 40)', this.offset);
+        this._drawNode(delta, this.offset / 4, Plunder.Easie.linear, 'rgb(140, 140, 140)');
+        this._drawNode(delta, this.offset - 4, this.easingFn, 'rgb(222, 147, 95)', this.offset);
         return window.requestAnimationFrame(this._updateBound);
       };
 

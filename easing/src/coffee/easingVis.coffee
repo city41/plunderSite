@@ -23,8 +23,8 @@ define ['plunder', 'raf'], (Plunder) ->
       @_lastTimestamp = ts
 
       @context.drawImage(@_pathBuffer, 0, 0)
-      @_drawNode(delta, @offset/4, Plunder.Easie.linear, 'rgb(255, 0, 0)')
-      @_drawNode(delta, 3 * @offset/4, @easingFn, 'rgb(200, 120, 40)', @offset)
+      @_drawNode(delta, @offset/4, Plunder.Easie.linear, 'rgb(140, 140, 140)')
+      @_drawNode(delta, @offset - 4, @easingFn, 'rgb(222, 147, 95)', @offset)
       window.requestAnimationFrame(@_updateBound)
 
     _drawNode: (delta, x, easingFn, color, xExpandOffset=null) ->
