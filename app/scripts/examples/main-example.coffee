@@ -64,23 +64,35 @@ entity = new Entity()
 entity.standard()
 
 
+playing = true
 context = document.getElementById('canvas').getContext('2d')
+button = document.getElementById('play-main-example');
+
+button.addEventListener 'click', ->
+  playing = !playing
+
+  if playing
+    button.innerHTML = "Pause";
+  else 
+    button.innerHTML = "Play";
 
 lastTimestamp = null
 
 update = (ts) ->
+  window.requestAnimationFrame(update)
+
   if !lastTimestamp
     lastTimestamp = ts
 
   delta = ts - lastTimestamp
   lastTimestamp = ts
 
-  entity.update(delta)
 
-  context.fillStyle = 'black'
-  context.fillRect(0, 0, context.canvas.width, context.canvas.height)
-  entity.draw(context)
-  window.requestAnimationFrame(update)
+  if playing
+    entity.update(delta)
+    context.fillStyle = 'black'
+    context.fillRect(0, 0, context.canvas.width, context.canvas.height)
+    entity.draw(context)
 
 update(0)
 
