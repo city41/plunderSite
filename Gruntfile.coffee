@@ -14,30 +14,17 @@ module.exports = (grunt) ->
   yeomanConfig =
     app: "app"
     dist: "dist"
-    easing: "easing"
-    docs: "docs"
 
   grunt.initConfig
     yeoman: yeomanConfig
     watch:
       coffee:
-        files: ["<%= yeoman.app %>/scripts/{,*/}*.coffee"]
+        files: ["<%= yeoman.app %>/scripts/**/*.coffee"]
         tasks: ["coffee:dist"]
 
       compass:
         files: ["<%= yeoman.app %>/sass/{,*/}*.{scss,sass}"]
         tasks: ["compass:server"]
-
-      easing:
-        files: ["<%= yeoman.easing %>/src/**/*.coffee"]
-        tasks: ["coffee:easing"]
-
-      docs:
-        files: [
-          "<%= yeoman.docs %>/src/**/*.{coffee,html}"
-          "<%= yeoman.easing %>/src/**/*.{coffee,html}"
-        ]
-        tasks: ["coffee:docs", "copy:docs", "coffee:easing", "copy:easing"]
 
       livereload:
         options:
@@ -46,7 +33,7 @@ module.exports = (grunt) ->
         files: [
           "<%= yeoman.app %>/*.html"
           "{.tmp,<%= yeoman.app %>}/styles/{,*/}*.css"
-          "{.tmp,<%= yeoman.app %>}/scripts/{,*/}*.js"
+          "{.tmp,<%= yeoman.app %>}/scripts/**/*.js"
           "<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}"
         ]
 
@@ -64,25 +51,6 @@ module.exports = (grunt) ->
         options:
           middleware: (connect) ->
             [mountFolder(connect, yeomanConfig.dist)]
-
-      easing:
-        options:
-          port: 9001
-          middleware: (connect) ->
-            [
-              mountFolder(connect, "#{yeomanConfig.easing}/dist")
-              mountFolder(connect, "#{yeomanConfig.app}/bower_components")
-            ]
-
-      docs:
-        options:
-          port: 9002
-          middleware: (connect) ->
-            [
-              mountFolder(connect, "#{yeomanConfig.docs}/dist")
-              mountFolder(connect, "")
-              mountFolder(connect, "#{yeomanConfig.app}/bower_components")
-            ]
 
     open:
       server:
@@ -111,27 +79,11 @@ module.exports = (grunt) ->
       ]
 
     coffee:
-      easing:
-        files: [
-          expand: true
-          cwd: "<%= yeoman.easing %>/src/coffee"
-          src: "{,*/}*.coffee"
-          dest: "<%= yeoman.easing %>/dist/scripts"
-          ext: ".js"
-        ]
-      docs:
-        files: [
-          expand: true
-          cwd: "<%= yeoman.docs %>/src/coffee"
-          src: "{,*/}*.coffee"
-          dest: "<%= yeoman.docs %>/dist/scripts"
-          ext: ".js"
-        ]
       dist:
         files: [
           expand: true
           cwd: "<%= yeoman.app %>/scripts"
-          src: "{,*/}*.coffee"
+          src: "**/*.coffee"
           dest: ".tmp/scripts"
           ext: ".js"
         ]
@@ -161,18 +113,9 @@ module.exports = (grunt) ->
     #            dist: {}
     #        },
     requirejs:
-      docs:
-        options:
-          baseUrl: "<%= yeoman.docs %>"
-          mainConfigFile: "<%= yeoman.docs %>/dist/scripts/main.js"
-          name: "dist/scripts/main"
-          out: "<%= yeoman.docs %>/dist/scripts/docs.js"
-          optimize: "none"
       dist:
-        
         # Options: https://github.com/jrburke/r.js/blob/master/build/example.build.js
         options:
-          
           # `name` and `out` is set by grunt-usemin
           baseUrl: yeomanConfig.app + "/scripts"
           optimize: "none"
@@ -185,7 +128,6 @@ module.exports = (grunt) ->
           preserveLicenseComments: false
           useStrict: true
           wrap: true
-
     
     #uglify2: {} // https://github.com/mishoo/UglifyJS2
     rev:
@@ -202,13 +144,25 @@ module.exports = (grunt) ->
       options:
         dest: "<%= yeoman.dist %>"
 
-      html: "<%= yeoman.app %>/index.html"
+      html: [
+        "<%= yeoman.app %>/index.html"
+        "<%= yeoman.app %>/docs/index.html"
+        "<%= yeoman.app %>/docs/easing/index.html"
+      ]
 
     usemin:
       options:
-        dirs: ["<%= yeoman.dist %>"]
+        dirs: [
+          "<%= yeoman.dist %>"
+          "<%= yeoman.dist %>/docs"
+          "<%= yeoman.dist %>/docs/easing"
+        ]
 
-      html: ["<%= yeoman.dist %>/{,*/}*.html"]
+      html: [
+        "<%= yeoman.dist %>/index.html"
+        "<%= yeoman.dist %>/docs/index.html"
+        "<%= yeoman.dist %>/docs/easing/index.html"
+      ]
       css: ["<%= yeoman.dist %>/styles/{,*/}*.css"]
 
     imagemin:
@@ -261,46 +215,15 @@ module.exports = (grunt) ->
         files: [
           expand: true
           cwd: "<%= yeoman.app %>"
-          src: "*.html"
+          src: [
+            "index.html"
+          ]
           dest: "<%= yeoman.dist %>"
         ]
 
     
     # Put files not handled in other tasks here
     copy:
-      docstodist:
-        files: [
-          expand: true
-          cwd: "<%= yeoman.docs %>/dist"
-          dest: "<%= yeoman.dist %>/docs"
-          src: [
-            "**/*.html"
-            "require.js"
-            "styles/**/*.css"
-            "scripts/docs.js"
-          ]
-        ]
-      docs:
-        files: [
-          expand: true
-          cwd: "<%= yeoman.docs %>/src"
-          dest: "<%= yeoman.docs %>/dist"
-          src: [
-            "**/*.html"
-            "require.js"
-            "styles/**/*.css"
-          ]
-        ]
-      easing:
-        files: [
-          expand: true
-          cwd: "<%= yeoman.easing %>/src"
-          dest: "<%= yeoman.easing %>/dist"
-          src: [
-            "index.html"
-            "require.js"
-          ]
-        ]
       dist:
         files: [
           expand: true
@@ -309,11 +232,11 @@ module.exports = (grunt) ->
           dest: "<%= yeoman.dist %>"
           src: [
             "*.{ico,png,txt}"
-            ".htaccess"
             "images/{,*/}*.{webp,gif}"
             "styles/fonts/*"
-            "docs/*"
             "CNAME"
+            "docs/index.html"
+            "docs/easing/index.html"
           ]
         ,
           expand: true
@@ -344,10 +267,5 @@ module.exports = (grunt) ->
     return grunt.task.run(["build", "open", "connect:dist:keepalive"])  if target is "dist"
     grunt.task.run ["clean:server", "concurrent:server", "connect:livereload", "open", "watch"]
 
-  grunt.registerTask "deploy:docs", ["build:docs", "copy:docstodist"]
-  grunt.registerTask "build", ["clean:dist", "useminPrepare", "concurrent:dist", "concat", "cssmin", "uglify", "copy:dist", "rev", "usemin", "deploy:docs"]
-  grunt.registerTask "build:easing", ["coffee:easing", "copy:easing"]
-  grunt.registerTask "build:docs", ["coffee:docs", "requirejs:docs", "copy:docs"]
-  grunt.registerTask "server:easing", ["build:easing", "connect:easing", "watch:easing"]
-  grunt.registerTask "server:docs", ["build:docs", "connect:docs", "watch:docs"]
+  grunt.registerTask "build", ["clean:dist", "useminPrepare", "concurrent:dist", "concat", "cssmin", "requirejs:dist", "uglify", "copy:dist", "rev", "usemin"]
   grunt.registerTask "default", ["jshint", "test", "build"]

@@ -99,14 +99,13 @@ t.forever(function() {
 	<!-- build:js scripts/vendor/highlight.js -->
 	<script src="bower_components/highlightjs/highlight.pack.js"></script>
 	<!-- endbuild -->
-	<!-- build:js scripts/main-example.js -->
-	<script src="scripts/plunder/main-example.js"></script>
+	<!-- build:js({.tmp,app}) scripts/examples/main-example.js -->
+	<script src="scripts/examples/main-example.js"></script>
 	<!-- endbuild -->
 	<script>
 		hljs.initHighlightingOnLoad();
 	</script>
 
-	<!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
 	<script>
 		var _gaq=[['_setAccount','UA-43645736-1'],['_trackPageview']];
 		(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
