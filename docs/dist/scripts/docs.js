@@ -1732,7 +1732,7 @@ define('main',["./Timeline", "./Util", "./Bezier", "./Easie", "./Invoke", "./Rep
 (function() {
   var __hasProp = {}.hasOwnProperty;
 
-  define('easingDoc',['plunder', 'easingVis', 'domReady'], function(Plunder, EasingVis, domReady) {
+  define('dist/scripts/easingDoc',['plunder', 'easingVis', 'domReady'], function(Plunder, EasingVis, domReady) {
     var addDemoEntry, addTocEntry, createContainer, easingDoc;
     addTocEntry = function(tocId, id) {
       var li, toc;
@@ -1795,7 +1795,7 @@ define('main',["./Timeline", "./Util", "./Bezier", "./Easie", "./Invoke", "./Rep
     }
   });
 
-  require(['easingDoc'], function(easingDoc) {
+  require(['./easingDoc'], function(easingDoc) {
     
     return easingDoc('easing_toc_section', 'easing_demo_container');
   });
