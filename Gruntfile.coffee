@@ -5,12 +5,6 @@ lrSnippet = require("connect-livereload")(port: LIVERELOAD_PORT)
 mountFolder = (connect, dir) ->
   connect.static require("path").resolve(dir)
 
-
-# # Globbing
-# for performance reasons we're only matching one level down:
-# 'test/spec/{,*/}*.js'
-# use this if you want to recursively match all subfolders:
-# 'test/spec/**/*.js'
 module.exports = (grunt) ->
   
   # load all grunt tasks
@@ -29,10 +23,6 @@ module.exports = (grunt) ->
       coffee:
         files: ["<%= yeoman.app %>/scripts/{,*/}*.coffee"]
         tasks: ["coffee:dist"]
-
-      coffeeTest:
-        files: ["test/spec/{,*/}*.coffee"]
-        tasks: ["coffee:test"]
 
       compass:
         files: ["<%= yeoman.app %>/sass/{,*/}*.{scss,sass}"]
@@ -69,11 +59,6 @@ module.exports = (grunt) ->
         options:
           middleware: (connect) ->
             [lrSnippet, mountFolder(connect, ".tmp"), mountFolder(connect, yeomanConfig.app)]
-
-      test:
-        options:
-          middleware: (connect) ->
-            [mountFolder(connect, ".tmp"), mountFolder(connect, "test")]
 
       dist:
         options:
@@ -123,14 +108,7 @@ module.exports = (grunt) ->
       all: [
         "<%= yeoman.app %>/scripts/{,*/}*.js"
         "!<%= yeoman.app %>/scripts/vendor/*"
-        "test/spec/{,*/}*.js"
       ]
-
-    mocha:
-      all:
-        options:
-          run: true
-          urls: ["http://localhost:<%= connect.options.port %>/index.html"]
 
     coffee:
       easing:
@@ -155,15 +133,6 @@ module.exports = (grunt) ->
           cwd: "<%= yeoman.app %>/scripts"
           src: "{,*/}*.coffee"
           dest: ".tmp/scripts"
-          ext: ".js"
-        ]
-
-      test:
-        files: [
-          expand: true
-          cwd: "test/spec"
-          src: "{,*/}*.coffee"
-          dest: ".tmp/spec"
           ext: ".js"
         ]
 
@@ -374,8 +343,6 @@ module.exports = (grunt) ->
   grunt.registerTask "server", (target) ->
     return grunt.task.run(["build", "open", "connect:dist:keepalive"])  if target is "dist"
     grunt.task.run ["clean:server", "concurrent:server", "connect:livereload", "open", "watch"]
-
-  grunt.registerTask "test", ["clean:server", "concurrent:test", "connect:test", "mocha"]
 
   grunt.registerTask "deploy:docs", ["build:docs", "copy:docstodist"]
   grunt.registerTask "build", ["clean:dist", "useminPrepare", "concurrent:dist", "concat", "cssmin", "uglify", "copy:dist", "rev", "usemin", "deploy:docs"]
