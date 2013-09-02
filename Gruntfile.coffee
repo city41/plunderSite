@@ -23,7 +23,7 @@ module.exports = (grunt) ->
         tasks: ["coffee:dist"]
 
       compass:
-        files: ["<%= yeoman.app %>/sass/{,*/}*.{scss,sass}"]
+        files: ["<%= yeoman.app %>/styles/{,*/}*.{scss,sass}"]
         tasks: ["compass:server"]
 
       livereload:
@@ -90,8 +90,8 @@ module.exports = (grunt) ->
 
     compass:
       options:
-        sassDir: "<%= yeoman.app %>/sass"
-        cssDir: "<%= yeoman.app %>/styles"
+        sassDir: "<%= yeoman.app %>/styles"
+        cssDir: ".tmp/styles"
         generatedImagesDir: ".tmp/images/generated"
         imagesDir: "<%= yeoman.app %>/images"
         javascriptsDir: "<%= yeoman.app %>/scripts"
@@ -267,5 +267,5 @@ module.exports = (grunt) ->
     return grunt.task.run(["build", "open", "connect:dist:keepalive"])  if target is "dist"
     grunt.task.run ["clean:server", "concurrent:server", "connect:livereload", "open", "watch"]
 
-  grunt.registerTask "build", ["clean:dist", "useminPrepare", "concurrent:dist", "concat", "cssmin", "requirejs:dist", "uglify", "copy:dist", "rev", "usemin"]
+  grunt.registerTask "build", ["clean:dist", "useminPrepare", "concurrent:dist", "concat", "cssmin", "uglify", "copy:dist", "rev", "usemin"]
   grunt.registerTask "default", ["jshint", "test", "build"]
