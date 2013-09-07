@@ -1,4 +1,3 @@
-# Generated on 2013-07-19 using generator-webapp 0.2.6
 "use strict"
 LIVERELOAD_PORT = 35729
 lrSnippet = require("connect-livereload")(port: LIVERELOAD_PORT)
@@ -107,27 +106,21 @@ module.exports = (grunt) ->
           debugInfo: true
 
     
-    # not used since Uglify task does concat,
-    # but still available if needed
-    #concat: {
-    #            dist: {}
-    #        },
     requirejs:
       dist:
         # Options: https://github.com/jrburke/r.js/blob/master/build/example.build.js
         options:
-          # `name` and `out` is set by grunt-usemin
-          baseUrl: ""
+          baseUrl: ".tmp/scripts/docs"
           optimize: "none"
           out: "<%= yeoman.dist %>/scripts/docs.min.js"
           paths:
-            plunder: "<%= yeoman.app %>/bower_components/plunder/dist/plunder.min"
+            plunder: "../../../<%= yeoman.app %>/bower_components/plunder/dist/plunder.min"
           preserveLicenseComments: false
           useStrict: true
           wrap: true
-          name: ".tmp/scripts/docs/main"
+          almond: true
+          name: "main"
     
-    #uglify2: {} // https://github.com/mishoo/UglifyJS2
     rev:
       dist:
         files:
