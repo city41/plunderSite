@@ -1,50 +1,45 @@
+Timeline = Plunder.Timeline
+U = Plunder.Util
+Engine = Baby.Engine
+ImageEntity = Baby.ImageEntity
 
-class Entity
-  constructor: (@img, @pos) ->
-    @anis = []
-    @angle = 0
-    @scale = 1
-    @timeline = new Timeline(this)
+engine = new Engine('canvas')
 
-  addPlunderAnimation: (ani) ->
-    @anis.push ani
+ball = new ImageEntity(200, 260, 'resources/ball.png')
+handle = new ImageEntity(70, 190, 'resources/handle.png')
+base = new ImageEntity(70, 240, 'resources/base.png')
 
-  clearPlunderAnimations: ->
-    @anis = []
-
-  update: (delta) ->
-    for ani in @anis
-      ani.update delta
-    return undefined
-
-  draw: (ctx) ->
-    ctx.save()
-    ctx.rotate @angle if @angle
-    ctx.scale @scale if @scale
-    ctx.drawImage(@pos.x, @pos.y)
-    ctx.restore()
+engine.add(ball)
+engine.add(base)
+engine.add(handle)
 
 
-# 
-# t = new Timeline(ball)
-# 
-# t.forever ->
-#   t.sequence ->
-#     t.together duration: 2000, ->
-#       ballGroup = t.together ->
-#         t.scale
-#           from: 1
-#           to: 10
-#           easing: 'bounceOut'
-#         t.rotate
-#           from: 0
-#           to: 30
-#       pumpUp = t.move
-#         target: handle
-#         from: x: 10, y: 100
-#         to: x: 10, y: 150
-#         easing: 'circOut'
-#     t.wait 500
-    # t.together ->
-    #   t.reverse ballGroup
-    #   t.reverse pumpUp, easing: 'linear'
+ballGroup = null
+pumpUp = null
+
+t = new Timeline(ball)
+
+t.forever ->
+  t.sequence ->
+    t.together duration: 6000, ->
+      ballGroup = t.together ->
+        t.scale
+          from: 1
+          to: 3
+          easing: 'bounceOut'
+        t.rotate
+          from: 0
+          to: 30
+      pumpUp = t.move
+        target: handle
+        from: x: 70, y: 190
+        to: x: 70, y: 240
+        easing: 'circOut'
+    t.wait 3000
+    t.together ->
+      t.reverse ballGroup
+      t.reverse pumpUp, easing: 'linear'
+    t.wait 2000
+      
+engine.start()
+
