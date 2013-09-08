@@ -3,6 +3,7 @@ U = Plunder.Util
 Engine = Baby.Engine
 RectEntity = Baby.RectEntity
 
+engine = new Engine('canvas')
 
 standard = (tl) ->
   tl.forever ->
@@ -33,14 +34,13 @@ playing = true
 button = document.getElementById('play-main-example');
 
 button.addEventListener 'click', ->
-  playing = !playing
+  engine.togglePause()
 
-  if playing
-    button.innerHTML = "Pause";
-  else 
+  if engine.paused
     button.innerHTML = "Play";
+  else 
+    button.innerHTML = "Pause";
 
-engine = new Engine('canvas')
 engine.add(entity)
 engine.start()
 
