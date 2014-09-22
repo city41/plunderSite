@@ -2,7 +2,7 @@ var browserify = require('browserify');
 var es6ify = require('es6ify');
 var gulp = require('gulp');
 var source = require('vinyl-source-stream');
-// var traceur = require('gulp-traceur');
+var react = require('gulp-react');
 var rimraf = require('rimraf');
 var stylus = require('gulp-stylus');
 var rename = require('gulp-rename');
@@ -44,7 +44,13 @@ gulp.task('build:easing:js', function() {
     .pipe(gulp.dest('dist/docs/easing/js'));
 });
 
-gulp.task('build:main:js', function() {
+gulp.task('build:main:jsx', function() {
+  return gulp.src('src/js/main/editor/*.jsx')
+    .pipe(react())
+    .pipe(gulp.dest('src/js/main/editor'));
+});
+
+gulp.task('build:main:js', ['build:main:jsx'], function() {
   return browserify(es6ify.runtime)
     .transform(es6ify)
     .add('./src/js/main/main.js')
@@ -54,12 +60,12 @@ gulp.task('build:main:js', function() {
 });
 
 gulp.task('build:html:main', function() {
-  gulp.src('src/html/main/*')
+  return gulp.src('src/html/main/*')
     .pipe(gulp.dest('dist'));
 });
 
 gulp.task('build:html:docs', function() {
-  gulp.src('src/html/docs/**/*')
+  return gulp.src('src/html/docs/**/*')
     .pipe(gulp.dest('dist/docs'));
 });
 
@@ -76,11 +82,11 @@ gulp.task('build', [
 ]);
 
 gulp.task('server', ['build'], function() {
-  gulp.src('dist').pipe(webserver());
+  return gulp.src('dist').pipe(webserver());
 });
 
 gulp.task('watch', ['server'], function() {
-  gulp.watch([
+  return gulp.watch([
     'src/**/*.html',
     'src/**/*.styl',
     'src/**/*.js',
