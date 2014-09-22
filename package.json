@@ -8,6 +8,7 @@
   "author": "Matt Greer <matt.e.greer@gmail.com> (http://www.mattgreer.org/)",
   "license": "MIT",
   "dependencies": {
+    "baby-engine": "0.0.1",
     "bootstrap": "^3.2.0",
     "domready": "^1.0.7",
     "jquery": "^2.1.1",

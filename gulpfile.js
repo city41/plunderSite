@@ -33,6 +33,15 @@ gulp.task('build:easing:js', function() {
     .pipe(gulp.dest('dist/docs/easing/js'));
 });
 
+gulp.task('build:main:js', function() {
+  return browserify(es6ify.runtime)
+    .transform(es6ify)
+    .add('./src/js/main/main.js')
+    .bundle()
+    .pipe(source('main-bundle.js'))
+    .pipe(gulp.dest('dist/js'));
+});
+
 gulp.task('build:html:main', function() {
   gulp.src('src/html/main/*')
     .pipe(gulp.dest('dist'));
@@ -44,10 +53,11 @@ gulp.task('build:html:docs', function() {
 });
 
 gulp.task('build', [
-  'clean:dist',
+  // 'clean:dist',
   'copy:bootstrap',
   'stylus:docs',
   'build:easing:js',
+  'build:main:js',
   'build:html:main',
   'build:html:docs'
 ]);
@@ -58,6 +68,7 @@ gulp.task('server', ['build'], function() {
 
 gulp.task('watch', ['server'], function() {
   gulp.watch([
+    'src/**/*.html',
     'src/**/*.styl',
     'src/**/*.js',
   ], ['build']);
