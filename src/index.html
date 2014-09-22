@@ -1,0 +1,93 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<title>Plunder</title>
+	<link rel="stylesheet" href="css/bootstrap.css">
+	<link rel="stylesheet" href="styles/6443a19d.tomorrow-night.css">
+	<link rel="stylesheet" href="/styles/c0ecc041.main.css">
+</head>
+<body>
+	<nav class="navbar navbar-default" role="navigation">
+	  <div class="navbar-header">
+		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+		  <span class="sr-only">Toggle navigation</span>
+		  <span class="icon-bar"></span>
+		  <span class="icon-bar"></span>
+		  <span class="icon-bar"></span>
+		</button>
+		<a class="navbar-brand" href="#">Plunder</a>
+	  </div>
+
+		<div class="collapse navbar-collapse">
+			<ul class="nav navbar-nav navbar-right">
+				<li><a href="docs/index.html">Docs</a></li>
+				<li><a href="http://github.com/city41/plunder">Github</a></li>
+			</ul>
+		</div>
+	</nav>
+	<div class="row">
+		<div class="col-md-2"></div>
+		<div class="col-md-8" style="margin-bottom: 25px">
+			<h1>Plunder <span><small>awesome animation for JavaScript games</small></span></h1>
+		</div>
+		<div class="col-md-2"></div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-2"></div>
+		<div class="col-md-5">
+<pre><code>var t = new Timeline(mySquare);
+t.forever(function() {
+  var g = t.together({ duration: 2000 }, function() {
+
+    t.rotate({ from: 0, to: 360 });
+    t.scale({ from: 1, to: 10 });
+
+    t.color({
+      from: [255, 0, 0, 1],
+      to: [255, 255, 0, 0.2]
+    });
+
+    t.move({
+      from: { x: 10, y: 10 },
+      to: { x: 250, y: 100 }
+    });
+
+  });
+  t.wait(1000);
+  t.reverse(g);
+});</code></pre>
+		</div>
+		<div class="col-md-3">
+			<div>
+				<canvas id="canvas"></canvas>
+			</div>
+			<button class="btn btn-default" id="play-main-example">Pause</button>
+		</div>
+		<div class="col-md-2"></div>
+	</div>
+
+	<div class="row" style="margin-top: 25px">
+		<div class="col-md-2"></div>
+		<div class="col-md-8">
+			<p class="lead"><b>Plunder</b> is an animation system targeted at JavaScript game engines. It provides powerful tween based animations, is engine agnostic,
+			and easily integrates into your game. It is well tested and performant. It is in its infancy right now, but was extracted from a previous game engine.</p>
+		</div>
+		<div class="col-md-2"></div>
+	</div>
+	<div class="col-md-12 footer">Created by <a href="http://www.mattgreer.org">Matt Greer</a> and MIT licensed, last updated August 31st, 2013</div>
+
+	<script src="scripts/vendor/95031b7d.jquery.js"></script>
+	<script src="scripts/vendor/6ec9174b.bootstrap.js"></script>
+	<script src="scripts/vendor/bcf3edc8.plunder.js"></script>
+	<script src="scripts/vendor/c7dcbd88.highlight.js"></script>
+	<script src="scripts/examples/8639e186.main-example.js"></script>
+	<script>
+		hljs.initHighlightingOnLoad();
+	</script>
+</body>
+</html>
