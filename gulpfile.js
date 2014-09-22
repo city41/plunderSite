@@ -17,6 +17,11 @@ gulp.task('copy:bootstrap', function() {
     .pipe(gulp.dest('dist/css'));
 });
 
+gulp.task('copy:highlightjs', function() {
+  gulp.src('node_modules/highlight.js/styles/tomorrow-night.css')
+    .pipe(gulp.dest('dist/css'));
+});
+
 gulp.task('stylus:docs', function() {
   gulp.src('src/stylus/docs/main.styl')
     .pipe(stylus())
@@ -55,6 +60,7 @@ gulp.task('build:html:docs', function() {
 gulp.task('build', [
   // 'clean:dist',
   'copy:bootstrap',
+  'copy:highlightjs',
   'stylus:docs',
   'build:easing:js',
   'build:main:js',
