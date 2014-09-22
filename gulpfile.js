@@ -26,6 +26,12 @@ gulp.task('stylus:docs', function() {
   gulp.src('src/stylus/docs/main.styl')
     .pipe(stylus())
     .pipe(rename('docs.css'))
+    .pipe(gulp.dest('./dist/docs/css'));
+});
+
+gulp.task('stylus:main', function() {
+  gulp.src('src/stylus/main/main.styl')
+    .pipe(stylus())
     .pipe(gulp.dest('./dist/css'));
 });
 
@@ -62,6 +68,7 @@ gulp.task('build', [
   'copy:bootstrap',
   'copy:highlightjs',
   'stylus:docs',
+  'stylus:main',
   'build:easing:js',
   'build:main:js',
   'build:html:main',
