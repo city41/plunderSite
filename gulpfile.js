@@ -3,10 +3,14 @@ var es6ify = require('es6ify');
 var gulp = require('gulp');
 var source = require('vinyl-source-stream');
 // var traceur = require('gulp-traceur');
-// var rimraf = require('rimraf');
+var rimraf = require('rimraf');
 var stylus = require('gulp-stylus');
 var rename = require('gulp-rename');
 var webserver = require('gulp-webserver');
+
+gulp.task('clean:dist', function(callback) {
+  rimraf('./dist', callback);
+});
 
 gulp.task('copy:bootstrap', function() {
   gulp.src('node_modules/bootstrap/dist/css/bootstrap.css')
@@ -40,6 +44,7 @@ gulp.task('build:html:docs', function() {
 });
 
 gulp.task('build', [
+  'clean:dist',
   'copy:bootstrap',
   'stylus:docs',
   'build:easing:js',
