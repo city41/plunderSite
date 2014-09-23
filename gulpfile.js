@@ -12,6 +12,11 @@ gulp.task('clean:dist', function(callback) {
   rimraf('./dist', callback);
 });
 
+gulp.task('copy:CNAME', function() {
+  gulp.src('src/CNAME')
+    .pipe(gulp.dest('dist'));
+});
+
 gulp.task('copy:bootstrap', function() {
   gulp.src('node_modules/bootstrap/dist/css/bootstrap.css')
     .pipe(gulp.dest('dist/css'));
@@ -71,6 +76,7 @@ gulp.task('build:html:docs', function() {
 
 gulp.task('build', [
   // 'clean:dist',
+  'copy:CNAME',
   'copy:bootstrap',
   'copy:highlightjs',
   'stylus:docs',

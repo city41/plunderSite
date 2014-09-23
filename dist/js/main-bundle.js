@@ -5,7 +5,6 @@ var hljs = require('highlight.js');
 var editor = require('./editor/editor').default;
 mainExample('canvas');
 hljs.initHighlightingOnLoad();
-editor('editor-container');
 
 
 },{"./editor/editor":297,"./main-example":299,"highlight.js":49}],2:[function(require,module,exports){

@@ -6,4 +6,4 @@ import editor from './editor/editor';
 mainExample('canvas');
 hljs.initHighlightingOnLoad();
 
-editor('editor-container');
+// editor('editor-container');
