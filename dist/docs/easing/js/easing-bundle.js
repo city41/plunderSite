@@ -4,7 +4,7 @@ var easingDoc = require('./easing-doc').default;
 easingDoc('easing_toc_section', 'easing_demo_container');
 
 
-},{"./easing-doc":18}],2:[function(require,module,exports){
+},{"./easing-doc":19}],2:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -2453,11 +2453,12 @@ module.exports = {
   Repeat: require('./lib/Repeat'),
   Together: require('./lib/Together'),
   Tween: require('./lib/Tween'),
-  Wait: require('./lib/Wait')
+  Wait: require('./lib/Wait'),
+  Loader: require('./lib/Loader')
 };
 
 
-},{"./lib/Bezier":7,"./lib/Easie":8,"./lib/Invoke":9,"./lib/Repeat":10,"./lib/Timeline":11,"./lib/Together":12,"./lib/Tween":13,"./lib/Util":14,"./lib/Wait":15}],6:[function(require,module,exports){
+},{"./lib/Bezier":7,"./lib/Easie":8,"./lib/Invoke":9,"./lib/Loader":10,"./lib/Repeat":11,"./lib/Timeline":12,"./lib/Together":13,"./lib/Tween":14,"./lib/Util":15,"./lib/Wait":16}],6:[function(require,module,exports){
 "use strict";
 var Accessor,
     U;
@@ -2501,7 +2502,7 @@ Accessor = (function() {
 module.exports = Accessor;
 
 
-},{"./Util":14}],7:[function(require,module,exports){
+},{"./Util":15}],7:[function(require,module,exports){
 "use strict";
 var Bezier,
     U;
@@ -2631,7 +2632,7 @@ Bezier = (function() {
 module.exports = Bezier;
 
 
-},{"./Util":14}],8:[function(require,module,exports){
+},{"./Util":15}],8:[function(require,module,exports){
 "use strict";
 var Easie,
     U;
@@ -2890,7 +2891,7 @@ Easie = (function() {
 module.exports = Easie;
 
 
-},{"./Util":14}],9:[function(require,module,exports){
+},{"./Util":15}],9:[function(require,module,exports){
 "use strict";
 var Invoke,
     U;
@@ -2921,7 +2922,67 @@ Invoke = (function() {
 module.exports = Invoke;
 
 
-},{"./Util":14}],10:[function(require,module,exports){
+},{"./Util":15}],10:[function(require,module,exports){
+"use strict";
+var Loader,
+    U,
+    getBuilder;
+U = require('./Util');
+getBuilder = function(loader, children) {};
+Loader = (function() {
+  function Loader() {
+    this._anis = [];
+  }
+  Loader.prototype._getBuilder = function(children) {
+    var _this = this;
+    return function(timeline) {
+      var child,
+          _i,
+          _len,
+          _results;
+      _results = [];
+      for (_i = 0, _len = children.length; _i < _len; _i++) {
+        child = children[_i];
+        _results.push(_this.load(child, timeline));
+      }
+      return _results;
+    };
+  };
+  Loader.prototype._findAni = function(id) {
+    return this._anis.filter(function(ani) {
+      return ani.id === id;
+    }).pop();
+  };
+  Loader.prototype._getArgs = function(args) {
+    var _this = this;
+    return args.map(function(arg) {
+      if (U.isString(arg) && arg.indexOf("id:") === 0) {
+        return _this._findAni(arg.substring(3));
+      } else {
+        return arg;
+      }
+    });
+  };
+  Loader.prototype.load = function(aniDef, timeline) {
+    var ani,
+        args,
+        method;
+    method = timeline[aniDef.type];
+    if (aniDef.children) {
+      ani = method.call(timeline, aniDef.childConfig || {}, this._getBuilder(aniDef.children));
+    } else {
+      args = this._getArgs(aniDef.args);
+      ani = method.apply(timeline, args);
+    }
+    ani.id = aniDef.id;
+    return this._anis.push(ani);
+  };
+  return Loader;
+})();
+module.exports = Loader;
+
+
+},{"./Util":15}],11:[function(require,module,exports){
 "use strict";
 var Repeat,
     U,
@@ -3007,7 +3068,7 @@ Repeat = (function() {
 module.exports = Repeat;
 
 
-},{"./Util":14}],11:[function(require,module,exports){
+},{"./Util":15}],12:[function(require,module,exports){
 "use strict";
 var Bezier,
     Invoke,
@@ -3032,6 +3093,7 @@ Timeline = (function() {
     }
     this._buildStack = [];
     this._childConfigStack = [];
+    this._builtAnis = [];
   }
   Timeline.prototype._getTargets = function(targetOptions) {
     var targets,
@@ -3076,7 +3138,7 @@ Timeline = (function() {
   };
   Timeline.prototype._pushAnimation = function(ani) {
     if (this._buildStack.length === 0) {
-      this.owner.addPlunderAnimation(ani);
+      this._builtAnis.push(ani);
     } else {
       this._buildStack[this._buildStack.length - 1].children.push(ani);
     }
@@ -3194,15 +3256,26 @@ Timeline = (function() {
       context: context
     });
   };
-  Timeline.prototype.stop = function() {
-    return this.owner.clearPlunderAnimations();
+  Timeline.prototype.update = function(delta) {
+    var ani,
+        _i,
+        _len,
+        _ref,
+        _results;
+    _ref = this._builtAnis;
+    _results = [];
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      ani = _ref[_i];
+      _results.push(ani.update(delta));
+    }
+    return _results;
   };
   return Timeline;
 })();
 module.exports = Timeline;
 
 
-},{"./Bezier":7,"./Invoke":9,"./Repeat":10,"./Together":12,"./Tween":13,"./Util":14,"./Wait":15}],12:[function(require,module,exports){
+},{"./Bezier":7,"./Invoke":9,"./Repeat":11,"./Together":13,"./Tween":14,"./Util":15,"./Wait":16}],13:[function(require,module,exports){
 "use strict";
 var Together,
     __slice = [].slice;
@@ -3270,7 +3343,7 @@ Together = (function() {
 module.exports = Together;
 
 
-},{}],13:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 "use strict";
 var Accessor,
     Easie,
@@ -3417,7 +3490,7 @@ Tween = (function() {
 module.exports = Tween;
 
 
-},{"./Accessor":6,"./Easie":8,"./Util":14}],14:[function(require,module,exports){
+},{"./Accessor":6,"./Easie":8,"./Util":15}],15:[function(require,module,exports){
 "use strict";
 var Util,
     buildIsType,
@@ -3514,10 +3587,10 @@ Util = {
     return array && array[0];
   },
   isEmpty: function(array) {
-    return array && array.length === 0;
+    return !!(array && array.length === 0);
   },
   any: function(array) {
-    return array && array.length > 0;
+    return !!(array && array.length > 0);
   }
 };
 Util.isArray = Array.isArray || function(obj) {
@@ -3536,7 +3609,7 @@ for (_i = 0, _len = _ref.length; _i < _len; _i++) {
 module.exports = Util;
 
 
-},{}],15:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 "use strict";
 var U,
     Wait;
@@ -3570,7 +3643,7 @@ Wait = (function() {
 module.exports = Wait;
 
 
-},{"./Util":14}],16:[function(require,module,exports){
+},{"./Util":15}],17:[function(require,module,exports){
 module.exports = function() {
   "use strict";
   (function() {
@@ -3632,12 +3705,12 @@ module.exports = function() {
 }.call(Reflect.global);
 
 
-},{}],17:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 "use strict";
 module.exports = require('./lib/shim');
 
 
-},{"./lib/shim":16}],18:[function(require,module,exports){
+},{"./lib/shim":17}],19:[function(require,module,exports){
 "use strict";
 Object.defineProperties(exports, {
   default: {get: function() {
@@ -3690,7 +3763,7 @@ function easingDoc(tocId, demoContainerId) {
 var $__default = easingDoc;
 
 
-},{"./easing-vis":19,"domready":3,"plunder":5}],19:[function(require,module,exports){
+},{"./easing-vis":20,"domready":3,"plunder":5}],20:[function(require,module,exports){
 "use strict";
 Object.defineProperties(exports, {
   default: {get: function() {
@@ -3765,4 +3838,4 @@ var EasingVis = function EasingVis(canvasId, easingFn, duration) {
 var $__default = EasingVis;
 
 
-},{"plunder":5,"request-animation-frame":17}]},{},[4,1]);
+},{"plunder":5,"request-animation-frame":18}]},{},[4,1]);

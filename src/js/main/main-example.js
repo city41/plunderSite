@@ -37,8 +37,8 @@ function runExample(canvasId) {
   var entity = new RectEntity(10, 10, 10, 10);
   entity.color = [255, 0, 0];
 
-  var timeline = new Timeline(entity);
-  standard(timeline);
+  entity.timeline = new Timeline(entity);
+  standard(entity.timeline);
 
   var playing = true
   var button = document.getElementById('play-main-example');
