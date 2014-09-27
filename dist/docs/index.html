@@ -92,7 +92,7 @@
             </p>
             <p>
                Timelines need to be constructed with an <em>owner</em>, this is typically an entity/actor/element in your game world.
-               This object needs to have a couple methods defined on it to work properly with Plunder, see the <a href="#engines">Engine Integrations</a>
+               This object needs to call <tt>timeline.update(delta)</tt> regularly, see the <a href="#engines">Engine Integrations</a>
                section for more information.
             </p>
             <p>
@@ -608,19 +608,8 @@ MyEntity.prototype = {
 
             <h2 id="engines">Engine Integrations</h2>
             <p>
-               Plunder is designed to be as engine agnostic as possible. The hooks it needs to work with an engine are minimal:
-               <ul>
-                  <li>The entities that Timeline and its animations work with need these methods:
-                     <ul>
-                        <li><tt>addPlunderAnimation(ani)</tt> - adds an animation for the entity to keep track of</li>
-                        <li><tt>clearPlunderAnimations()</tt> - remove all animations the entity is responsible for</li>
-                     </ul>
-                  </li>
-                  <li>The entity should call <tt>update(delta)</tt> against all animations it was given with <tt>addAni</tt></li>
-               </ul>
-            </p>
-            <p>
-               <b>TODO</b>: these methods will be renamed <tt>addPlunderAnimation</tt> and <tt>clearPlunderAnimations</tt> soon
+               Plunder is designed to be as engine agnostic as possible. Once you have a timeline setup, you just have to call <tt>timeline.update(delta)</tt> on it periodically.
+               Typically during your entity's update method.
             </p>
             <p>
                Here is an example entity implementation that meets Plunder's needs:
@@ -631,29 +620,20 @@ function Entity() {
 }
 
 Entity.prototype = {
-   addPlunderAnimation: function(ani) {
-      this.anis.push(ani);
-   },
-   clearPlunderAnimations: function() {
-      this.anis = [];
-   },
    update: function(delta) {
-      for(var i = 0, i < this.anis.length; ++i) {
-         this.anis[i].update(delta);
+      if (this.timeline) {
+         this.timeline(update);
       }
    }
 }
 
 var entity = new Entity();
-var timeline = new Timeline(entity);
-timeline.move({
+entity.timeline = new Timeline(entity);
+entity.timeline.move({
    from: { x: 10, y: 10 },
    to: { x: 100, y: 100 },
    duration: 1000
 });
-
-// at this point entity.anis will contain one animation
-// object that will move the entity as prescribed
 </pre>
             <p>
                <b>Note:</b> for more info on what <tt>delta</tt> needs to be in <tt>update</tt>, see the <a href="#time">Time Units</a> section.
@@ -673,6 +653,13 @@ timeline.move({
             <h2 id="changelog">
                Change Log
             </h2>
+            <p>
+               <b class="header">0.1.2</b> — <small><i>Sept 20, 2014</i></small>
+            </p>
+            <ul>
+               <li>Removed required entity methods. Now just call <tt>timeline.update(delta)</tt>.
+               </li>
+            </ul>
             <p>
                <b class="header">0.1.0</b> — <small><i>Jul. 7, 2013</i></small>
             </p>
