@@ -582,7 +582,7 @@ timeline.forever({ duration: 2000 }, function() {
             <p>
                Plunder is completely time unit agnostic. Milliseconds, seconds, fortnights... it doesn't matter as long as you are consistent.
                If your game typically uses milliseconds, then as long as you use milliseconds for all <tt>duration</tt> specifications <em>and</em>
-               pass milliseconds as the <tt>delta</tt> parameter to each animation's <tt>update(delta)</tt> method, then Plunder will work correctly.
+               pass milliseconds as the <tt>delta</tt> parameter to the timeline's <tt>update(delta)</tt> method, then Plunder will work correctly.
             </p>
 <pre>
 timeline.tween({
@@ -594,9 +594,7 @@ timeline.tween({
 
 MyEntity.prototype = {
    update: function(delta) {
-      for(var i = 0; i < this.anis.length; ++i) {
-         this.anis[i].update(delta); // <---- use those same units here
-      }
+      timeline.update(delta);  // <---- use those same units here
    }
 }
 </pre>
@@ -616,7 +614,6 @@ MyEntity.prototype = {
 
 <pre>
 function Entity() {
-   this.anis = [];
 }
 
 Entity.prototype = {
@@ -658,6 +655,13 @@ entity.timeline.move({
             </p>
             <ul>
                <li>Removed required entity methods. Now just call <tt>timeline.update(delta)</tt>.
+               </li>
+            </ul>
+            <p>
+               <b class="header">0.1.1</b> — <small><i>Sept 18, 2014</i></small>
+            </p>
+            <ul>
+               <li>Made Plunder an NPM package, got rid of RequireJS, and other clean ups.
                </li>
             </ul>
             <p>
